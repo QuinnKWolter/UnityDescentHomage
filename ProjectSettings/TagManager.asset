@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - ShieldBoost
+  - EnergyBoost
+  - m_conc1
+  - m_conc4
+  - m_flash1
+  - m_flash4
+  - m_homing1
+  - m_homing4
+  - m_guide1
+  - m_guide4
+  - m_proxbomb
+  - m_proxbox
+  - m_smartbomb
+  - m_smartbox
+  - m_merc1
+  - m_merc4
+  - m_mega
+  - m_smart
+  - m_earthshaker
+  - w_laser
+  - w_super
+  - w_quad
+  - w_vulcan
+  - w_vulcanammo
+  - w_gauss
+  - w_spreadfire
+  - w_helix
+  - w_plasma
+  - w_phoenix
+  - w_fusion
+  - w_omega
+  - p_afterburner
+  - p_allmap
+  - p_ammorack
+  - p_cloak
+  - p_invuln
+  - p_life
+  - p_converter
+  - p_headlight
+  - hostage
+  - key_blue
+  - key_red
+  - key_yellow
+  - projectile
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
