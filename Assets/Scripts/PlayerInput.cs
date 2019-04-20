@@ -71,7 +71,7 @@ public class PlayerInput : MonoBehaviour {
 	int ConcAmmo = 4;
 	int FlashAmmo = 0;
 	int HomingAmmo = 0;
-	int GuideAmmo = 0;
+	int GuidedAmmo = 0;
 	int ProxbombAmmo = 0;
 	int SmartbombAmmo = 0;
 	int MercAmmo = 0;
@@ -80,8 +80,10 @@ public class PlayerInput : MonoBehaviour {
 	int EarthshakerAmmo = 0;
 	int OmegaAmmo = 0;
 
-	string EquippedPrimary = "laser";
-	string EquippedSecondary = "conc";
+	int tempEnergy = 100;
+
+	string EquippedPrimary = "Laser";
+	string EquippedSecondary = "Concussion Missile";
 
 	private IEnumerator coroutine;
 
@@ -96,13 +98,18 @@ public class PlayerInput : MonoBehaviour {
 	void Start () {
 		sHand = GetComponent<ShipHandler> ();
 		HUD.SetStats(LifeCount, Shields, Energy);
-		//HUD.SetPanels(Energy);
+		HUD.SetPanels(Energy);
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		//Receive input
+		// Check if Energy needs to be updated
+		if (tempEnergy != Energy) {
+			HUD.SetPanels(Energy);
+			tempEnergy = Energy;
+		}
 
+		// Receive input
 		if (Input.GetKeyDown (KeyCode.KeypadPlus)) {
 			if (LaserLevel < 6) {
 				LaserLevel += 1;
@@ -167,6 +174,127 @@ public class PlayerInput : MonoBehaviour {
 		moveInput = new Vector3 (h, l, v);
 		rotInput = new Vector3 (rv, rh, rl);
 
+		if (Input.GetKeyDown (KeyCode.Alpha1)) {
+			if (EquippedPrimary != "Laser" || EquippedPrimary != "Super\nLaser"){
+				// TODO PLAY WEAPON SWAP SOUND!!!!
+				if (LaserLevel > 4){
+					EquippedPrimary = "Super\nLaser";
+					HUD.SetPrimary(1, EquippedPrimary, Energy);
+				} else {
+					EquippedPrimary = "Laser";
+					HUD.SetPrimary(0, EquippedPrimary, Energy);
+				}
+			}
+		} else if (Input.GetKeyDown (KeyCode.Alpha2)) {
+			if (EquippedPrimary != "Vulcan\nMinigun" && hasVulcan){
+				// TODO PLAY WEAPON SWAP SOUND!!!!
+				EquippedPrimary = "Vulcan\nMinigun";
+				HUD.SetPrimary(2, EquippedPrimary, VulcanAmmo);
+			} else if ((EquippedPrimary == "Vulcan\nMinigun" || !hasVulcan) && hasGauss){
+				// TODO PLAY WEAPON SWAP SOUND!!!!
+				EquippedPrimary = "Gauss\nCannon";
+				HUD.SetPrimary(3, EquippedPrimary, VulcanAmmo);
+			} else {
+				// TODO PLAY FAIL SOUND
+			}
+		} else if (Input.GetKeyDown (KeyCode.Alpha3)) {
+			if (EquippedPrimary != "Spreadfire\nCannon" && hasSpreadfire){
+				// TODO PLAY WEAPON SWAP SOUND!!!!
+				EquippedPrimary = "Spreadfire\nCannon";
+				HUD.SetPrimary(4, EquippedPrimary, Energy);
+			} else if ((EquippedPrimary == "Spreadfire\nCannon" || !hasSpreadfire) && hasHelix){
+				// TODO PLAY WEAPON SWAP SOUND!!!!
+				EquippedPrimary = "Helix\nCannon";
+				HUD.SetPrimary(5, EquippedPrimary, Energy);
+			} else {
+				// TODO PLAY FAIL SOUND
+			}
+		} else if (Input.GetKeyDown (KeyCode.Alpha4)) {
+			if (EquippedPrimary != "Plasma\nCannon" && hasPlasma){
+				// TODO PLAY WEAPON SWAP SOUND!!!!
+				EquippedPrimary = "Plasma\nCannon";
+				HUD.SetPrimary(6, EquippedPrimary, Energy);
+			} else if ((EquippedPrimary == "Plasma\nCannon" || !hasPlasma) && hasPhoenix){
+				// TODO PLAY WEAPON SWAP SOUND!!!!
+				EquippedPrimary = "Phoenix\nCannon";
+				HUD.SetPrimary(7, EquippedPrimary, Energy);
+			} else {
+				// TODO PLAY FAIL SOUND
+			}
+		} else if (Input.GetKeyDown (KeyCode.Alpha5)) {
+			if (EquippedPrimary != "Fusion\nCannon" && hasFusion){
+				// TODO PLAY WEAPON SWAP SOUND!!!!
+				EquippedPrimary = "Fusion\nCannon";
+				HUD.SetPrimary(8, EquippedPrimary, Energy);
+			} else if ((EquippedPrimary == "Fusion\nCannon" || !hasFusion) && hasOmega){
+				// TODO PLAY WEAPON SWAP SOUND!!!!
+				EquippedPrimary = "Omega\nCannon";
+				HUD.SetPrimary(9, EquippedPrimary, Energy);
+			} else {
+				// TODO PLAY FAIL SOUND
+			}
+		} else if (Input.GetKeyDown (KeyCode.Alpha6)) {
+			if (EquippedSecondary != "Concussion\nMissile" && hasConc){
+				// TODO PLAY WEAPON SWAP SOUND!!!!
+				EquippedSecondary = "Concussion\nMissile";
+				HUD.SetSecondary(10, EquippedSecondary, ConcAmmo);
+			} else if ((EquippedSecondary == "Concussion\nMissile" || !hasConc) && hasFlash){
+				// TODO PLAY WEAPON SWAP SOUND!!!!
+				EquippedSecondary = "Flash\nMissile";
+				HUD.SetSecondary(11, EquippedSecondary, FlashAmmo);
+			} else {
+				// TODO PLAY FAIL SOUND
+			}
+		} else if (Input.GetKeyDown (KeyCode.Alpha7)) {
+			if (EquippedSecondary != "Homing\nMissile" && hasHoming){
+				// TODO PLAY WEAPON SWAP SOUND!!!!
+				EquippedSecondary = "Homing\nMissile";
+				HUD.SetSecondary(12, EquippedSecondary, HomingAmmo);
+			} else if ((EquippedSecondary == "Homing\nMissile" || !hasHoming) && hasGuide){
+				// TODO PLAY WEAPON SWAP SOUND!!!!
+				EquippedSecondary = "Guided\nMissile";
+				HUD.SetSecondary(13, EquippedSecondary, GuidedAmmo);
+			} else {
+				// TODO PLAY FAIL SOUND
+			}
+		} else if (Input.GetKeyDown (KeyCode.Alpha8)) {
+			if (EquippedSecondary != "Proximity\nMine" && hasProxbomb){
+				// TODO PLAY WEAPON SWAP SOUND!!!!
+				EquippedSecondary = "Proximity\nMine";
+				HUD.SetSecondary(14, EquippedSecondary, ProxbombAmmo);
+			} else if ((EquippedSecondary == "Proximity\nMine" || !hasProxbomb) && hasSmartbomb){
+				// TODO PLAY WEAPON SWAP SOUND!!!!
+				EquippedSecondary = "Smart\nMine";
+				HUD.SetSecondary(15, EquippedSecondary, SmartbombAmmo);
+			} else {
+				// TODO PLAY FAIL SOUND
+			}
+		} else if (Input.GetKeyDown (KeyCode.Alpha9)) {
+			if (EquippedSecondary != "Mercury\nMissile" && hasMerc){
+				// TODO PLAY WEAPON SWAP SOUND!!!!
+				EquippedSecondary = "Mercury\nMissile";
+				HUD.SetSecondary(16, EquippedSecondary, MercAmmo);
+			} else if ((EquippedSecondary == "Mercury\nMissile" || !hasMerc) && hasSmart){
+				// TODO PLAY WEAPON SWAP SOUND!!!!
+				EquippedSecondary = "Smart\nMissile";
+				HUD.SetSecondary(17, EquippedSecondary, SmartAmmo);
+			} else {
+				// TODO PLAY FAIL SOUND
+			}
+		} else if (Input.GetKeyDown (KeyCode.Alpha0)) {
+			if (EquippedSecondary != "Mega\nMissile" && hasMega){
+				// TODO PLAY WEAPON SWAP SOUND!!!!
+				EquippedSecondary = "Mega\nMissile";
+				HUD.SetSecondary(18, EquippedSecondary, MegaAmmo);
+			} else if ((EquippedSecondary == "Mega\nMissile" || !hasMega) && hasEarthshaker){
+				// TODO PLAY WEAPON SWAP SOUND!!!!
+				EquippedSecondary = "Earthshaker\nMissile";
+				HUD.SetSecondary(19, EquippedSecondary, EarthshakerAmmo);
+			} else {
+				// TODO PLAY FAIL SOUND
+			}
+		}
+
 		if (Input.GetKeyDown (KeyCode.P)) {
 			powered = !powered;
 		}
@@ -181,7 +309,7 @@ public class PlayerInput : MonoBehaviour {
 					Headlight.GetComponent<Light>().intensity = 0;
 				} else {
 					Headlight.GetComponent<Light>().intensity = 1;
-				} 
+				}
 			} else {
 				Headlight.GetComponent<Light>().intensity = 0;
 			}
@@ -464,16 +592,16 @@ public class PlayerInput : MonoBehaviour {
 		}
 		if (collision.gameObject.tag == "m_guide1"){
 			if (hasAmmoRack) {
-				if (GuideAmmo + 1 > 40) {
-					GuideAmmo = 40;
+				if (GuidedAmmo + 1 > 40) {
+					GuidedAmmo = 40;
 				} else {
-					GuideAmmo += 1;
+					GuidedAmmo += 1;
 				}
 			} else {
-				if (GuideAmmo + 1 > 20) {
-					GuideAmmo = 20;
+				if (GuidedAmmo + 1 > 20) {
+					GuidedAmmo = 20;
 				} else {
-					GuideAmmo += 1;
+					GuidedAmmo += 1;
 				}
 			}
 			hasGuide = true;
@@ -486,16 +614,16 @@ public class PlayerInput : MonoBehaviour {
 		}
 		if (collision.gameObject.tag == "m_guide4"){
 			if (hasAmmoRack) {
-				if (GuideAmmo + 4 > 40) {
-					GuideAmmo = 40;
+				if (GuidedAmmo + 4 > 40) {
+					GuidedAmmo = 40;
 				} else {
-					GuideAmmo += 4;
+					GuidedAmmo += 4;
 				}
 			} else {
-				if (GuideAmmo + 4 > 20) {
-					GuideAmmo = 20;
+				if (GuidedAmmo + 4 > 20) {
+					GuidedAmmo = 20;
 				} else {
-					GuideAmmo += 4;
+					GuidedAmmo += 4;
 				}
 			}
 			hasGuide = true;
@@ -639,6 +767,7 @@ public class PlayerInput : MonoBehaviour {
 				}
 			}
 			hasSmart = true;
+			AudioSource.PlayClipAtPoint(PickupSound, transform.position);
 			Destroy (collision.gameObject);
 			Color start = new Color(255f,255f,255f,0f);
 			Color end = new Color(255f,255f,255f,.8f);
@@ -1178,6 +1307,7 @@ public class PlayerInput : MonoBehaviour {
 			}
 		}
 		HUD.SetStats(LifeCount, Shields, Energy);
+		HUD.SetShield(Shields);
 	}
 
 	public void BoostEnergy(int amount){
@@ -1238,6 +1368,7 @@ public class PlayerInput : MonoBehaviour {
 	public void Damage(int amount){
 		Shields -= amount;
 		HUD.SetStats(LifeCount, Shields, Energy);
+		HUD.SetShield(Shields);
 		if (Shields <= 0){
 			PlayerDeath();
 		}

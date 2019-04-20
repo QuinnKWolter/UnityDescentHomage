@@ -11,10 +11,25 @@ public class HUDScript : MonoBehaviour {
 	public Image YellowKeyLight;
 	public Image RedKeyLight;
 	public Image Crosshair;
+	public Image ShieldDisplay;
+	public Image ShipDisplay;
 	public Image Cockpit;
 	public Image ScreenCover;
 	public Text Messages;
 	public Text Stats;
+
+	// Shields
+	public Sprite[] ShieldStates;
+	public Sprite[] ShieldInvuln;
+
+	// Weapons
+	public Sprite[] WeaponGraphics;
+	public Image PrimaryGraphic;
+	public Text PrimaryLabel;
+	public Text PrimaryAmmo;
+	public Image SecondaryGraphic;
+	public Text SecondaryLabel;
+	public Text SecondaryAmmo;
 
 	float xR, xL;
 
@@ -24,26 +39,17 @@ public class HUDScript : MonoBehaviour {
 	void Start () {
 		xR = (float)EnergyRight.GetComponent<RectTransform>().sizeDelta.x;
 		xL = (float)EnergyLeft.GetComponent<RectTransform>().sizeDelta.x;
-		Debug.Log("sizeDelta Xs:");
-		Debug.Log(EnergyRight.GetComponent<RectTransform>().sizeDelta.x);
-		Debug.Log(EnergyLeft.GetComponent<RectTransform>().sizeDelta.x);
-		Debug.Log("xR and Xl:");
-		Debug.Log(xR);
-		Debug.Log(xL);
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 
 	}
 
 	public void SetPanels(int energy){
-		Debug.Log("Energy is: " + energy);
-		Debug.Log("energy/200 is: " + ((float)energy/200.0f));
 		float percentage = ((float)energy/200.0f);
 		float tempR = (float)xR * (float)percentage;
 		float tempL = xL * percentage;
-		Debug.Log("TempR/TempL = " + tempR + "/" + tempL);
 
 		float yR = EnergyRight.GetComponent<RectTransform>().sizeDelta.y;
 		float yL = EnergyLeft.GetComponent<RectTransform>().sizeDelta.y;
@@ -52,8 +58,44 @@ public class HUDScript : MonoBehaviour {
 		EnergyLeft.GetComponent<RectTransform>().sizeDelta = new Vector2(tempL, yL);
 	}
 
+	public void SetShield(int shield){
+		if (shield <= 0){
+			ShieldDisplay.GetComponent<Image>().sprite = ShieldStates[9];
+		} else if (shield < 25){
+			ShieldDisplay.GetComponent<Image>().sprite = ShieldStates[8];
+		} else if (shield < 50){
+			ShieldDisplay.GetComponent<Image>().sprite = ShieldStates[7];
+		} else if (shield < 75){
+			ShieldDisplay.GetComponent<Image>().sprite = ShieldStates[6];
+		} else if (shield < 100){
+			ShieldDisplay.GetComponent<Image>().sprite = ShieldStates[5];
+		} else if (shield < 125){
+			ShieldDisplay.GetComponent<Image>().sprite = ShieldStates[4];
+		} else if (shield < 150){
+			ShieldDisplay.GetComponent<Image>().sprite = ShieldStates[3];
+		} else if (shield < 175){
+			ShieldDisplay.GetComponent<Image>().sprite = ShieldStates[2];
+		} else if (shield < 200){
+			ShieldDisplay.GetComponent<Image>().sprite = ShieldStates[1];
+		} else if (shield >= 200){
+			ShieldDisplay.GetComponent<Image>().sprite = ShieldStates[0];
+		}
+	}
+
+	public void SetPrimary(int graphic, string label, int ammo){
+		PrimaryGraphic.GetComponent<Image>().sprite = WeaponGraphics[graphic];
+		PrimaryLabel.GetComponent<Text>().text = label;
+		PrimaryAmmo.GetComponent<Text>().text = ammo.ToString();
+	}
+
+	public void SetSecondary(int graphic, string label, int ammo){
+		SecondaryGraphic.GetComponent<Image>().sprite = WeaponGraphics[graphic];
+		SecondaryLabel.GetComponent<Text>().text = label;
+		SecondaryAmmo.GetComponent<Text>().text = ammo.ToString();
+	}
+
 	public void BlueKeyOn(){
-		BlueKeyLight.GetComponent<Image>().enabled = true; 
+		BlueKeyLight.GetComponent<Image>().enabled = true;
 	}
 	public void BlueKeyOff(){
 		BlueKeyLight.GetComponent<Image>().enabled = false;
@@ -70,7 +112,7 @@ public class HUDScript : MonoBehaviour {
 	public void RedKeyOff(){
 		RedKeyLight.GetComponent<Image>().enabled = false;
 	}
-		
+
 	public void SetStats(int Lives, int Shields, int Energy){
 		Stats.text = "Lives: " + Lives.ToString () + "\nShields: " + Shields.ToString () + "\nEnergy: " + Energy.ToString ();
 	}
