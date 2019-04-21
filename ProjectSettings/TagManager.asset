@@ -48,6 +48,7 @@ TagManager:
   - key_red
   - key_yellow
   - projectile
+  - Door
   layers:
   - Default
   - TransparentFX

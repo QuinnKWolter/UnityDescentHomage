@@ -13,23 +13,39 @@ public class ExplosionScript : MonoBehaviour {
 		//Apply explosive force to all nearby rigidbodies
 		Vector3 explosionPos = transform.position;
 		Collider[] colliders = Physics.OverlapSphere (explosionPos, radius);
+		GetComponent<AudioSource>().Play();
+		StartCoroutine(DestroyExplosion());
 
 		foreach (Collider hit in colliders){
+
+			Debug.Log(hit.tag);
+
 			if (!hit){
 				continue;
 			}
-			
+
 			if (hit.GetComponent<Rigidbody>()){
 				hit.GetComponent<Rigidbody>().AddExplosionForce(power, explosionPos, radius, 3.0f);
 			}
-			
+
+			if (hit.tag == "Door"){
+				Debug.Log("Door Hit");
+				hit.transform.parent.GetComponent<DoorScript>().Open();
+			}
+
 		}
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		var v = transform.position - Camera.main.transform.position;
 		//v.y = 0.0f;
 		transform.rotation = Quaternion.LookRotation (v);
+	}
+
+	IEnumerator DestroyExplosion()
+	{
+			yield return new WaitForSeconds(2);
+			Destroy(gameObject);
 	}
 }

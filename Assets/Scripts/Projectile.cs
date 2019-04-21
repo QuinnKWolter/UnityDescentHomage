@@ -13,10 +13,10 @@ public class Projectile : MonoBehaviour {
 	void Start () {
 		AudioSource.PlayClipAtPoint (fireSound, transform.position);
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 
 	void OnCollisionEnter (Collision collision) {
@@ -30,12 +30,8 @@ public class Projectile : MonoBehaviour {
 			Instantiate (explosionPrefab, transform.position, Quaternion.identity);
 			Destroy (GetComponent<Transform> ().GetChild (0).gameObject);
 			Destroy (gameObject.GetComponent<MeshRenderer>());
-			
 		}
 		Destroy (gameObject.GetComponent<Rigidbody>());
-		if (impactSound) {
-			AudioSource.PlayClipAtPoint (impactSound, transform.position);
-		}
 		Destroy(gameObject);
 	}
 
