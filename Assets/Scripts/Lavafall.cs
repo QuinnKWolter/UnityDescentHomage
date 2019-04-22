@@ -4,20 +4,19 @@ using UnityEngine;
 
 public class Lavafall : MonoBehaviour
 {
-    public float speed = 50;
+    // Scroll main texture based on time
 
-    private float currentscroll;
-    private Material _material;
+    float scrollSpeed = 0.5f;
+    MeshRenderer rend;
 
-    // Start is called before the first frame update
     void Start()
     {
-        _material = GetComponent<SpriteRenderer>().material;
+        rend = GetComponent<MeshRenderer> ();
     }
 
     void Update()
     {
-        currentscroll += speed * Time.deltaTime;
-        _material.mainTextureOffset = new Vector2(currentscroll, 0);
+        float offset = Time.time * scrollSpeed;
+        rend.material.SetTextureOffset("_MainTex", new Vector2(0, -offset));
     }
 }

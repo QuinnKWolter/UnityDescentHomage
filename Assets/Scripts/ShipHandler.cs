@@ -29,7 +29,7 @@ public class ShipHandler : MonoBehaviour {
 	void Move()
 	{
 		if (powered) {
-			speed = 150;
+			speed = 250;
 			rb.drag = 10;
 		} else {
 			speed = 0;

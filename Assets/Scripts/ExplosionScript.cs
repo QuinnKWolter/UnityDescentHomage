@@ -5,7 +5,7 @@ using UnityEngine;
 public class ExplosionScript : MonoBehaviour {
 
 	//Change to reflect what's exploding eventually.
-	public float radius = 5.0f;
+	public float radius = 0.0001f;
 	public float power = 10.0f;
 
 	// Use this for initialization
@@ -29,8 +29,11 @@ public class ExplosionScript : MonoBehaviour {
 			}
 
 			if (hit.tag == "Door"){
-				Debug.Log("Door Hit");
 				hit.transform.parent.GetComponent<DoorScript>().Open();
+			}
+
+			if (hit.tag == "Light"){
+				hit.GetComponent<LightScript>().Break();
 			}
 
 		}
