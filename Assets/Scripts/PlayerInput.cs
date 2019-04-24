@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerInput : MonoBehaviour {
 
 	public int DIFFICULTY_MULTIPLIER = 6;
+
+	public Canvas VICTORY_SCREEN;
 
 	public GameObject Laser1;
 	public GameObject Laser2;
@@ -13,6 +16,7 @@ public class PlayerInput : MonoBehaviour {
 	public GameObject Laser4;
 	public GameObject Laser5;
 	public GameObject Laser6;
+	public GameObject Missile;
 	public GameObject Flare;
 	public GameObject Headlight;
 
@@ -63,12 +67,14 @@ public class PlayerInput : MonoBehaviour {
 	bool hasMega = false;
 	bool hasEarthshaker = false;
 
+	bool canUpgrade = true;
+
 	public Canvas UICanvas;
 
 	int LifeCount = 3;
 	int LaserLevel = 1;
-	int Energy = 100;
-	int Shields = 100;
+	int Energy = 200;
+	int Shields = 150;
 	int VulcanAmmo = 0;
 	int MaxVulcanAmmo = 12500;
 	int ConcAmmo = 4;
@@ -83,7 +89,7 @@ public class PlayerInput : MonoBehaviour {
 	int EarthshakerAmmo = 0;
 	int OmegaAmmo = 0;
 
-	int tempEnergy = 100;
+	int tempEnergy = 200;
 
 	string EquippedPrimary = "Laser";
 	string EquippedSecondary = "Concussion\nMissile";
@@ -101,10 +107,10 @@ public class PlayerInput : MonoBehaviour {
 	void Start () {
 		sHand = GetComponent<ShipHandler> ();
 		HUD.SetStats(LifeCount, Shields, Energy);
-		HUD.SetShield(100);
+		HUD.SetShield(150);
 		// TODO Empties bars.... figure out why.
 		// HUD.SetPanels(100);
-		HUD.SetPrimary(0, EquippedPrimary, Energy);
+		HUD.SetPrimary(0, EquippedPrimary, Energy/2);
 		HUD.SetSecondary(10, EquippedSecondary, ConcAmmo);
 	}
 
@@ -112,7 +118,6 @@ public class PlayerInput : MonoBehaviour {
 	void Update () {
 		// Check if Energy needs to be updated
 		if (tempEnergy != Energy) {
-			Debug.Log("ENERGY TEMP STUFF");
 			HUD.SetPanels(Energy);
 			tempEnergy = Energy;
 		}
@@ -157,11 +162,9 @@ public class PlayerInput : MonoBehaviour {
 
 		if (Input.GetMouseButtonDown (0)) {
 			PrimaryFire (EquippedPrimary, LaserLevel);
-			Debug.Log ("LMB PRESSED");
 		}
 		if (Input.GetMouseButtonDown (1)) {
 			SecondaryFire (EquippedSecondary);
-			Debug.Log ("RMB PRESSED");
 		}
 
 		if (Input.GetKey (KeyCode.Escape)) {
@@ -187,10 +190,10 @@ public class PlayerInput : MonoBehaviour {
 				AudioSource.PlayClipAtPoint(WeaponSwapPrimary, transform.position);
 				if (LaserLevel > 4){
 					EquippedPrimary = "Super\nLaser";
-					HUD.SetPrimary(1, EquippedPrimary, Energy);
+					HUD.SetPrimary(1, EquippedPrimary, Energy/2);
 				} else {
 					EquippedPrimary = "Laser";
-					HUD.SetPrimary(0, EquippedPrimary, Energy);
+					HUD.SetPrimary(0, EquippedPrimary, Energy/2);
 				}
 			}
 		} else if (Input.GetKeyDown (KeyCode.Alpha2)) {
@@ -313,6 +316,7 @@ public class PlayerInput : MonoBehaviour {
 
 		if (Input.GetKeyDown (KeyCode.H)) {
 			if (hasHeadlight) {
+				// headlightOn = !headlightOn;
 				if (Headlight.GetComponent<Light>().intensity > 0) {
 					Headlight.GetComponent<Light>().intensity = 0;
 				} else {
@@ -335,49 +339,56 @@ public class PlayerInput : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider collision){
+		if (collision.gameObject.name == "VICTORY") {
+				VICTORY_SCREEN.gameObject.SetActive(true);
+				powered = false;
+				StartCoroutine(WaitForVictory());
+				Cursor.lockState = CursorLockMode.None;
+				Cursor.visible = true;
+		}
 		if (collision.gameObject.tag == "ShieldBoost"){
+			Destroy (collision.gameObject);
 			BoostShields (3);
 			AudioSource.PlayClipAtPoint(PickupSound, transform.position);
-			Destroy (collision.gameObject);
 			Color start = new Color(0f,0f,80f,0f);
 			Color end = new Color(0f,0f,80f,.8f);
 			coroutine = FlashColor (start, end, .1f);
 			StartCoroutine (coroutine);
 		}
 		if (collision.gameObject.tag == "EnergyBoost"){
+			Destroy (collision.gameObject);
 			BoostEnergy (3);
 			AudioSource.PlayClipAtPoint(PickupSound, transform.position);
-			Destroy (collision.gameObject);
 			Color start = new Color(80f,80f,80f,0f);
 			Color end = new Color(80f,80f,0f,.8f);
 			coroutine = FlashColor (start, end, .1f);
 			StartCoroutine (coroutine);
 		}
 		if (collision.gameObject.tag == "key_red"){
+			Destroy (collision.gameObject);
 			HUD.RedKeyOn ();
 			hasRedKey = true;
 			AudioSource.PlayClipAtPoint(KeySound, transform.position);
-			Destroy (collision.gameObject);
 			Color start = new Color(80f,0f,0f,0f);
 			Color end = new Color(80f,0f,0f,.8f);
 			coroutine = FlashColor (start, end, .1f);
 			StartCoroutine (coroutine);
 		}
 		if (collision.gameObject.tag == "key_yellow"){
+			Destroy (collision.gameObject);
 			HUD.YellowKeyOn ();
 			hasYellowKey = true;
 			AudioSource.PlayClipAtPoint(KeySound, transform.position);
-			Destroy (collision.gameObject);
 			Color start = new Color(80f,80f,0f,0f);
 			Color end = new Color(80f,80f,0f,.8f);
 			coroutine = FlashColor (start, end, .1f);
 			StartCoroutine (coroutine);
 		}
 		if (collision.gameObject.tag == "key_blue"){
+			Destroy (collision.gameObject);
 			HUD.BlueKeyOn ();
 			hasBlueKey = true;
 			AudioSource.PlayClipAtPoint(KeySound, transform.position);
-			Destroy (collision.gameObject);
 			Color start = new Color(0f,0f,80f,0f);
 			Color end = new Color(0f,0f,80f,.8f);
 			coroutine = FlashColor (start, end, .1f);
@@ -487,6 +498,7 @@ public class PlayerInput : MonoBehaviour {
 			Color end = new Color(255f,255f,255f,.8f);
 			coroutine = FlashColor (start, end, .1f);
 			StartCoroutine (coroutine);
+			HUD.SetSecondary(10, EquippedSecondary, ConcAmmo);
 		}
 		if (collision.gameObject.tag == "m_conc4"){
 			if (hasAmmoRack) {
@@ -509,6 +521,7 @@ public class PlayerInput : MonoBehaviour {
 			Color end = new Color(255f,255f,255f,.8f);
 			coroutine = FlashColor (start, end, .1f);
 			StartCoroutine (coroutine);
+			HUD.SetSecondary(10, EquippedSecondary, ConcAmmo);
 		}
 		if (collision.gameObject.tag == "m_flash1"){
 			if (hasAmmoRack) {
@@ -808,24 +821,24 @@ public class PlayerInput : MonoBehaviour {
 		//WEAPON PICKUPS
 		if (collision.gameObject.tag == "w_laser") {
 			if (Energy < 200 && LaserLevel < 4) {
+				Destroy (collision.gameObject);
 				ImproveLaser ("laser");
 				BoostEnergy (3);
 				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
 				StartCoroutine (coroutine);
 				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
 			} else if (Energy >= 200 && LaserLevel < 4) {
+				Destroy (collision.gameObject);
 				ImproveLaser ("laser");
 				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
 				StartCoroutine (coroutine);
 				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
 			} else if (Energy < 200 && LaserLevel >= 4) {
+				Destroy (collision.gameObject);
 				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
 				StartCoroutine (coroutine);
 				BoostEnergy (3);
 				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
 			} else if (Energy >= 200 && LaserLevel >= 4) {
 				//Do nothing. Display message eventually.
 			} else {
@@ -834,24 +847,24 @@ public class PlayerInput : MonoBehaviour {
 		}
 		if (collision.gameObject.tag == "w_super"){
 			if (Energy < 200 && LaserLevel < 6) {
+				Destroy (collision.gameObject);
 				ImproveLaser ("super");
 				BoostEnergy (3);
 				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
 				StartCoroutine (coroutine);
 				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
 			} else if (Energy >= 200 && LaserLevel < 6) {
+				Destroy (collision.gameObject);
 				ImproveLaser ("super");
 				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
 				StartCoroutine (coroutine);
 				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
 			} else if (Energy < 200 && LaserLevel >= 6) {
+				Destroy (collision.gameObject);
 				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
 				StartCoroutine (coroutine);
 				BoostEnergy (3);
 				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
 			} else if (Energy >= 200 && LaserLevel >= 6) {
 				//Do nothing. Display message eventually.
 			} else {
@@ -1109,6 +1122,22 @@ public class PlayerInput : MonoBehaviour {
 		}
 	}
 
+	IEnumerator WaitForXSeconds(float X){
+		yield return new WaitForSeconds(X);
+	}
+
+	IEnumerator WaitForUpgrade(){
+		yield return new WaitForSeconds(1f);
+		canUpgrade = true;
+	}
+
+	IEnumerator WaitForVictory(){
+		Cursor.lockState = CursorLockMode.None;
+		Cursor.visible = true;
+		yield return new WaitForSeconds(5f);
+		SceneManager.LoadScene("MainMenu");
+	}
+
 	IEnumerator FlashColor(Color start, Color end, float overTime)
 	{
 		float startTime = Time.time;
@@ -1129,6 +1158,10 @@ public class PlayerInput : MonoBehaviour {
 	public void PrimaryFire(string Weapon, int LaserLevel)
 	{
 		if (Weapon == "Laser") {
+			if (!DrainEnergy (2)) {
+				return;
+			}
+			HUD.SetPrimary(0, EquippedPrimary, Energy/2);
 			var laser1 = new GameObject();
 			var laser2 = new GameObject();
 			var laser3 = new GameObject();
@@ -1273,7 +1306,19 @@ public class PlayerInput : MonoBehaviour {
 
 	public void SecondaryFire(string Weapon)
 	{
-		Debug.Log ("Missile Away!");
+		if (ConcAmmo <= 0){
+			ConcAmmo = 0;
+			return;
+		}
+		var missile = (GameObject)Instantiate (
+				Missile,
+				flareSpawn.position,
+				flareSpawn.rotation
+		);
+		missile.GetComponent<Rigidbody>().velocity = missile.transform.up * 60;
+		ConcAmmo -= 1;
+		HUD.SetSecondary(10, EquippedSecondary, ConcAmmo);
+		// Debug.Log ("Missile Away!");
 	}
 
 	public bool hasBlue(){
@@ -1304,17 +1349,19 @@ public class PlayerInput : MonoBehaviour {
 
 	void ImproveLaser(string s)
 	{
-		if (s == "laser") {
+		if (s == "laser" && canUpgrade) {
 			if (LaserLevel < 4) {
 				LaserLevel += 1;
 			}
-		} else if (s == "super") {
+		} else if (s == "super" && canUpgrade) {
 			if (LaserLevel < 6) {
 				LaserLevel += 1;
 			}
 		} else {
 			Debug.Log ("That's not supposed to happen....");
 		}
+		canUpgrade = false;
+		StartCoroutine(WaitForUpgrade());
 	}
 
 	public void BoostShields(int amount){
@@ -1340,6 +1387,9 @@ public class PlayerInput : MonoBehaviour {
 			}
 		}
 		HUD.SetStats(LifeCount, Shields, Energy);
+		if (EquippedPrimary == "Laser" || EquippedPrimary == "Super Laser"){
+			HUD.SetPrimary(0, EquippedPrimary, Energy/2);
+		}
 	}
 
 	public void BoostAmmo(int amount){
@@ -1395,12 +1445,19 @@ public class PlayerInput : MonoBehaviour {
 	}
 
 	void PlayerDeath(){
-		Debug.Log("PLAYER DEATH");
+		// Debug.Log("PLAYER DEATH");
 		MainCam.transform.position = new Vector3(-3f, 1.5f, 3f);
 		MainCam.transform.rotation = new Quaternion(20f, 130f, 0f, 1);
 		powered = false;
 		float torque = 10;
 		float turn = Input.GetAxis("Horizontal");
     GetComponent<Rigidbody>().AddTorque(transform.up * torque * turn);
+		StartCoroutine(Respawn());
 	}
+
+	IEnumerator Respawn()
+	 {
+		 yield return new WaitForSeconds(5f);
+		 SceneManager.LoadScene("Level01");
+	 }
 }

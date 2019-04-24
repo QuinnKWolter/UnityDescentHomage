@@ -49,6 +49,9 @@ TagManager:
   - key_yellow
   - projectile
   - Door
+  - Light
+  - Enemy
+  - Flare
   layers:
   - Default
   - TransparentFX

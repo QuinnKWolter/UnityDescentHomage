@@ -38,7 +38,6 @@ public class DoorScript : MonoBehaviour
         doorOpen.GetComponent<AudioSource>().Play();
         return;
       }
-      Debug.Log("OPENING DOOR");
       anim.Play("Open");
       isOpen = true;
       front.GetComponent<MeshCollider>().enabled = false;
@@ -48,7 +47,6 @@ public class DoorScript : MonoBehaviour
     }
 
     public void Close(){
-      Debug.Log("CLOSING DOOR");
       anim.Play("Close");
       isOpen = false;
       front.GetComponent<MeshCollider>().enabled = true;

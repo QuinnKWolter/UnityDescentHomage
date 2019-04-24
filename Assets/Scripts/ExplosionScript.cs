@@ -7,6 +7,7 @@ public class ExplosionScript : MonoBehaviour {
 	//Change to reflect what's exploding eventually.
 	public float radius = 0.0001f;
 	public float power = 10.0f;
+	public int damage;
 
 	// Use this for initialization
 	void Start () {
@@ -18,7 +19,7 @@ public class ExplosionScript : MonoBehaviour {
 
 		foreach (Collider hit in colliders){
 
-			Debug.Log(hit.tag);
+			// Debug.Log(hit.tag);
 
 			if (!hit){
 				continue;
@@ -34,6 +35,14 @@ public class ExplosionScript : MonoBehaviour {
 
 			if (hit.tag == "Light"){
 				hit.GetComponent<LightScript>().Break();
+			}
+
+			if (hit.tag == "Player"){
+				hit.GetComponent<PlayerInput>().Damage(damage);
+			}
+
+			if (hit.tag == "Enemy"){
+				hit.GetComponent<EnemyScript>().Damage(damage);
 			}
 
 		}

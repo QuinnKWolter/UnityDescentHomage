@@ -15,12 +15,12 @@ public class Flare : MonoBehaviour {
 		StartCoroutine (coroutine);
 		Invoke ("Flicker", timer);
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
-		
+
 	void Flicker(){
 		if (counter == 1) {
 			gameObject.GetComponent<Renderer> ().material.SetTexture ("_MainTex", t1);
@@ -55,6 +55,10 @@ public class Flare : MonoBehaviour {
 			counter = 1;
 		}
 		Invoke ("Flicker", timer);
+	}
+
+	void OnCollisionEnter(){
+		GetComponent<Rigidbody>().velocity = Vector3.zero;
 	}
 
 	IEnumerator DestroyTimer1(){

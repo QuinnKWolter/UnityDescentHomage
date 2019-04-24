@@ -959,7 +959,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6686905706144065715}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0.75}
+  m_LocalPosition: {x: 1.4210855e-14, y: -0.5, z: 1.1788352}
   m_LocalScale: {x: 0.25, y: 0.1, z: 0.25}
   m_Children: []
   m_Father: {fileID: 6686905706957020204}
@@ -1521,7 +1521,7 @@ GameObject:
   - component: {fileID: 6686905706957020200}
   - component: {fileID: 6686905706957020247}
   - component: {fileID: 6686905706957020246}
-  - component: {fileID: 6686905706957020202}
+  - component: {fileID: 3937471580839600288}
   m_Layer: 0
   m_Name: Player Ship
   m_TagString: Player
@@ -1608,13 +1608,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4a50d1fed4748f448ad5c788965f201, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DIFFICULTY_MULTIPLIER: 6
+  DIFFICULTY_MULTIPLIER: 3
   Laser1: {fileID: 1854497429576568, guid: 8a9b5fa06dd23b74cac481e623e565f2, type: 3}
   Laser2: {fileID: 1854497429576568, guid: 68adc32f09d33e44e88d8506b7482254, type: 3}
   Laser3: {fileID: 1854497429576568, guid: 9c30d881a327a5748a9e48ba12dac701, type: 3}
   Laser4: {fileID: 1854497429576568, guid: 2fadedb67ac29ce4caebf51e1ec4ba99, type: 3}
   Laser5: {fileID: 1854497429576568, guid: d8d30733bfaca624bb20968256e7be04, type: 3}
   Laser6: {fileID: 1854497429576568, guid: 28a0daecc79dde944a442ebd1379bbed, type: 3}
+  Missile: {fileID: 0}
   Flare: {fileID: 1090894965651610, guid: 078b8f53e4863a24da7e612cb2ec17ae, type: 3}
   Headlight: {fileID: 6686905706401738177}
   MainCam: {fileID: 6686905705904423372}
@@ -1663,8 +1664,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &6686905706957020202
-BoxCollider:
+--- !u!135 &3937471580839600288
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1674,7 +1675,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 2, z: 1}
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6686905706995495690
 GameObject:

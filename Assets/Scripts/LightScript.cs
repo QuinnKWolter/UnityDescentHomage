@@ -20,7 +20,6 @@ public class LightScript : MonoBehaviour
     }
 
     public void Break(){
-        Debug.Log("BREAKING LIGHT");
         GetComponent<AudioSource>().Play();
         GetComponent<SpriteRenderer>().sprite = brokenSprite;
         Destroy(light);

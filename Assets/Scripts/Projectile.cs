@@ -26,13 +26,24 @@ public class Projectile : MonoBehaviour {
 		if (collision.gameObject.GetComponent<MineScript>()){
 			collision.gameObject.GetComponent<MineScript>().Detonate();
 		}
+		if (collision.gameObject.tag == "Door"){
+			collision.gameObject.transform.parent.GetComponent<DoorScript>().Open();
+		}
+		if (collision.gameObject.tag == "Player"){
+			collision.gameObject.GetComponent<PlayerInput>().Damage(damage);
+		}
+		if (collision.gameObject.tag == "Enemy"){
+			collision.gameObject.GetComponent<EnemyScript>().Damage(damage);
+		}
 		if (explosionPrefab) {
 			Instantiate (explosionPrefab, transform.position, Quaternion.identity);
-			Destroy (GetComponent<Transform> ().GetChild (0).gameObject);
-			Destroy (gameObject.GetComponent<MeshRenderer>());
+			// Destroy (GetComponent<Transform> ().GetChild (0).gameObject);
+			// Destroy (gameObject.GetComponent<MeshRenderer>());
 		}
-		Destroy (gameObject.GetComponent<Rigidbody>());
-		Destroy(gameObject);
+		if (gameObject.tag != "Flare"){
+			Destroy (gameObject.GetComponent<Rigidbody>());
+			Destroy(gameObject);
+		}
 	}
 
 }

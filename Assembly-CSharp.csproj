@@ -58,11 +58,13 @@
      <Compile Include="Assets\Scripts\CameraScript.cs" />
      <Compile Include="Assets\Scripts\DestroyIn5.cs" />
      <Compile Include="Assets\Scripts\DoorScript.cs" />
+     <Compile Include="Assets\Scripts\EnemyScript.cs" />
      <Compile Include="Assets\Scripts\ExplosionScript.cs" />
      <Compile Include="Assets\Scripts\Flare.cs" />
      <Compile Include="Assets\Scripts\HUDScript.cs" />
      <Compile Include="Assets\Scripts\Lavafall.cs" />
      <Compile Include="Assets\Scripts\LightScript.cs" />
+     <Compile Include="Assets\Scripts\MainMenu.cs" />
      <Compile Include="Assets\Scripts\MineScript.cs" />
      <Compile Include="Assets\Scripts\PickupScript.cs" />
      <Compile Include="Assets\Scripts\PlayerInput.cs" />
