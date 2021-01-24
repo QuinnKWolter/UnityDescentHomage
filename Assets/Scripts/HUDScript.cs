@@ -88,10 +88,18 @@ public class HUDScript : MonoBehaviour {
 		PrimaryAmmo.GetComponent<Text>().text = ammo.ToString();
 	}
 
+	public string GetPrimary(){
+		return PrimaryLabel.GetComponent<Text>().text;
+	}
+
 	public void SetSecondary(int graphic, string label, int ammo){
 		SecondaryGraphic.GetComponent<Image>().sprite = WeaponGraphics[graphic];
 		SecondaryLabel.GetComponent<Text>().text = label;
 		SecondaryAmmo.GetComponent<Text>().text = ammo.ToString();
+	}
+
+	public string GetSecondary(){
+		return SecondaryLabel.GetComponent<Text>().text;
 	}
 
 	public void BlueKeyOn(){
@@ -119,5 +127,28 @@ public class HUDScript : MonoBehaviour {
 
 	public void PushMessage(string Message){
 		ActiveMessages.Enqueue (Message);
+	}
+
+	public IEnumerator FlashColor(Color start, Color end, float overTime)
+	{
+		float startTime = Time.time;
+		while(Time.time < startTime + overTime)
+		{
+			ScreenCover.color = Color.Lerp(start, end, (Time.time - startTime)/overTime);
+			yield return null;
+		}
+		startTime = Time.time;
+		while(Time.time < startTime + overTime)
+		{
+			ScreenCover.color = Color.Lerp(end, start, (Time.time - startTime)/overTime);
+			yield return null;
+		}
+		ScreenCover.color = start;
+	}
+
+	public void ScaleUI(){
+		float scaleCockpitX = Screen.width / Cockpit.GetComponent<RectTransform>().rect.width;
+		float scaleCockpitY = Screen.height / Cockpit.GetComponent<RectTransform>().rect.height;
+		Cockpit.GetComponent<RectTransform>().localScale = new Vector3(scaleCockpitX, scaleCockpitY, 1);
 	}
 }

@@ -69,8 +69,6 @@ public class PlayerInput : MonoBehaviour {
 
 	bool canUpgrade = true;
 
-	public Canvas UICanvas;
-
 	int LifeCount = 3;
 	int LaserLevel = 1;
 	int Energy = 200;
@@ -104,18 +102,19 @@ public class PlayerInput : MonoBehaviour {
 	bool powered = true;
 
 	// Use this for initialization
-	void Start () {
-		sHand = GetComponent<ShipHandler> ();
+	void Start() {
+		sHand = GetComponent<ShipHandler>();
 		HUD.SetStats(LifeCount, Shields, Energy);
 		HUD.SetShield(150);
 		// TODO Empties bars.... figure out why.
 		// HUD.SetPanels(100);
 		HUD.SetPrimary(0, EquippedPrimary, Energy/2);
 		HUD.SetSecondary(10, EquippedSecondary, ConcAmmo);
+		HUD.ScaleUI();
 	}
 
 	// Update is called once per frame
-	void Update () {
+	void Update() {
 		// Check if Energy needs to be updated
 		if (tempEnergy != Energy) {
 			HUD.SetPanels(Energy);
@@ -123,51 +122,51 @@ public class PlayerInput : MonoBehaviour {
 		}
 
 		// Receive input
-		if (Input.GetKeyDown (KeyCode.KeypadPlus)) {
+		if (Input.GetKeyDown(KeyCode.KeypadPlus)) {
 			if (LaserLevel < 6) {
 				LaserLevel += 1;
 			}
 		}
-		if (Input.GetKeyDown (KeyCode.KeypadMinus)) {
+		if (Input.GetKeyDown(KeyCode.KeypadMinus)) {
 			if (LaserLevel > 1) {
 				LaserLevel -= 1;
 			}
 		}
 
-		if (Input.GetKeyDown (KeyCode.Keypad8)) {
+		if (Input.GetKeyDown(KeyCode.Keypad8)) {
 			if (Shields < 200) {
 				BoostShields(1);
 			}
 			HUD.SetStats(LifeCount, Shields, Energy);
 		}
-		if (Input.GetKeyDown (KeyCode.Keypad2)) {
+		if (Input.GetKeyDown(KeyCode.Keypad2)) {
 			if (Shields > 0) {
 				Damage(10);
 			}
 			HUD.SetStats(LifeCount, Shields, Energy);
 		}
 
-		if (Input.GetKeyDown (KeyCode.Keypad6)) {
+		if (Input.GetKeyDown(KeyCode.Keypad6)) {
 			if (Energy < 200) {
 				BoostEnergy(1);
 			}
 			HUD.SetStats(LifeCount, Shields, Energy);
 		}
-		if (Input.GetKeyDown (KeyCode.Keypad4)) {
+		if (Input.GetKeyDown(KeyCode.Keypad4)) {
 			if (Energy > 0) {
 				DrainEnergy(1);
 			}
 			HUD.SetStats(LifeCount, Shields, Energy);
 		}
 
-		if (Input.GetMouseButtonDown (0)) {
-			PrimaryFire (EquippedPrimary, LaserLevel);
+		if (Input.GetMouseButtonDown(0)) {
+			PrimaryFire(EquippedPrimary, LaserLevel);
 		}
-		if (Input.GetMouseButtonDown (1)) {
-			SecondaryFire (EquippedSecondary);
+		if (Input.GetMouseButtonDown(1)) {
+			SecondaryFire(EquippedSecondary);
 		}
 
-		if (Input.GetKey (KeyCode.Escape)) {
+		if (Input.GetKey(KeyCode.Escape)) {
 			Cursor.lockState = CursorLockMode.None;
 			Cursor.visible = true;
 		} else {
@@ -182,10 +181,10 @@ public class PlayerInput : MonoBehaviour {
 		float rv = -Input.GetAxisRaw("Mouse Y");
 		float rl = Input.GetAxisRaw("Mouse Z");
 
-		moveInput = new Vector3 (h, l, v);
-		rotInput = new Vector3 (rv, rh, rl);
+		moveInput = new Vector3(h, l, v);
+		rotInput = new Vector3(rv, rh, rl);
 
-		if (Input.GetKeyDown (KeyCode.Alpha1)) {
+		if (Input.GetKeyDown(KeyCode.Alpha1)) {
 			if (EquippedPrimary != "Laser" || EquippedPrimary != "Super\nLaser"){
 				AudioSource.PlayClipAtPoint(WeaponSwapPrimary, transform.position);
 				if (LaserLevel > 4){
@@ -196,7 +195,7 @@ public class PlayerInput : MonoBehaviour {
 					HUD.SetPrimary(0, EquippedPrimary, Energy/2);
 				}
 			}
-		} else if (Input.GetKeyDown (KeyCode.Alpha2)) {
+		} else if (Input.GetKeyDown(KeyCode.Alpha2)) {
 			if (EquippedPrimary != "Vulcan\nMinigun" && hasVulcan){
 				AudioSource.PlayClipAtPoint(WeaponSwapPrimary, transform.position);
 				EquippedPrimary = "Vulcan\nMinigun";
@@ -208,7 +207,7 @@ public class PlayerInput : MonoBehaviour {
 			} else {
 				AudioSource.PlayClipAtPoint(WeaponSwapFail, transform.position);
 			}
-		} else if (Input.GetKeyDown (KeyCode.Alpha3)) {
+		} else if (Input.GetKeyDown(KeyCode.Alpha3)) {
 			if (EquippedPrimary != "Spreadfire\nCannon" && hasSpreadfire){
 				AudioSource.PlayClipAtPoint(WeaponSwapPrimary, transform.position);
 				EquippedPrimary = "Spreadfire\nCannon";
@@ -220,7 +219,7 @@ public class PlayerInput : MonoBehaviour {
 			} else {
 				AudioSource.PlayClipAtPoint(WeaponSwapFail, transform.position);
 			}
-		} else if (Input.GetKeyDown (KeyCode.Alpha4)) {
+		} else if (Input.GetKeyDown(KeyCode.Alpha4)) {
 			if (EquippedPrimary != "Plasma\nCannon" && hasPlasma){
 				AudioSource.PlayClipAtPoint(WeaponSwapPrimary, transform.position);
 				EquippedPrimary = "Plasma\nCannon";
@@ -232,7 +231,7 @@ public class PlayerInput : MonoBehaviour {
 			} else {
 				AudioSource.PlayClipAtPoint(WeaponSwapFail, transform.position);
 			}
-		} else if (Input.GetKeyDown (KeyCode.Alpha5)) {
+		} else if (Input.GetKeyDown(KeyCode.Alpha5)) {
 			if (EquippedPrimary != "Fusion\nCannon" && hasFusion){
 				AudioSource.PlayClipAtPoint(WeaponSwapPrimary, transform.position);
 				EquippedPrimary = "Fusion\nCannon";
@@ -244,7 +243,7 @@ public class PlayerInput : MonoBehaviour {
 			} else {
 				AudioSource.PlayClipAtPoint(WeaponSwapFail, transform.position);
 			}
-		} else if (Input.GetKeyDown (KeyCode.Alpha6)) {
+		} else if (Input.GetKeyDown(KeyCode.Alpha6)) {
 			if (EquippedSecondary != "Concussion\nMissile" && hasConc){
 				AudioSource.PlayClipAtPoint(WeaponSwapSecondary, transform.position);
 				EquippedSecondary = "Concussion\nMissile";
@@ -256,7 +255,7 @@ public class PlayerInput : MonoBehaviour {
 			} else {
 				AudioSource.PlayClipAtPoint(WeaponSwapFail, transform.position);
 			}
-		} else if (Input.GetKeyDown (KeyCode.Alpha7)) {
+		} else if (Input.GetKeyDown(KeyCode.Alpha7)) {
 			if (EquippedSecondary != "Homing\nMissile" && hasHoming){
 				AudioSource.PlayClipAtPoint(WeaponSwapSecondary, transform.position);
 				EquippedSecondary = "Homing\nMissile";
@@ -268,7 +267,7 @@ public class PlayerInput : MonoBehaviour {
 			} else {
 				AudioSource.PlayClipAtPoint(WeaponSwapFail, transform.position);
 			}
-		} else if (Input.GetKeyDown (KeyCode.Alpha8)) {
+		} else if (Input.GetKeyDown(KeyCode.Alpha8)) {
 			if (EquippedSecondary != "Proximity\nMine" && hasProxbomb){
 				AudioSource.PlayClipAtPoint(WeaponSwapSecondary, transform.position);
 				EquippedSecondary = "Proximity\nMine";
@@ -280,7 +279,7 @@ public class PlayerInput : MonoBehaviour {
 			} else {
 				AudioSource.PlayClipAtPoint(WeaponSwapFail, transform.position);
 			}
-		} else if (Input.GetKeyDown (KeyCode.Alpha9)) {
+		} else if (Input.GetKeyDown(KeyCode.Alpha9)) {
 			if (EquippedSecondary != "Mercury\nMissile" && hasMerc){
 				AudioSource.PlayClipAtPoint(WeaponSwapSecondary, transform.position);
 				EquippedSecondary = "Mercury\nMissile";
@@ -292,7 +291,7 @@ public class PlayerInput : MonoBehaviour {
 			} else {
 				AudioSource.PlayClipAtPoint(WeaponSwapFail, transform.position);
 			}
-		} else if (Input.GetKeyDown (KeyCode.Alpha0)) {
+		} else if (Input.GetKeyDown(KeyCode.Alpha0)) {
 			if (EquippedSecondary != "Mega\nMissile" && hasMega){
 				AudioSource.PlayClipAtPoint(WeaponSwapSecondary, transform.position);
 				EquippedSecondary = "Mega\nMissile";
@@ -306,15 +305,15 @@ public class PlayerInput : MonoBehaviour {
 			}
 		}
 
-		if (Input.GetKeyDown (KeyCode.P)) {
+		if (Input.GetKeyDown(KeyCode.P)) {
 			powered = !powered;
 		}
 
-		if (Input.GetKeyDown (KeyCode.F)) {
+		if (Input.GetKeyDown(KeyCode.F)) {
 			FireFlare();
 		}
 
-		if (Input.GetKeyDown (KeyCode.H)) {
+		if (Input.GetKeyDown(KeyCode.H)) {
 			if (hasHeadlight) {
 				// headlightOn = !headlightOn;
 				if (Headlight.GetComponent<Light>().intensity > 0) {
@@ -327,7 +326,7 @@ public class PlayerInput : MonoBehaviour {
 			}
 		}
 
-		if (Input.GetKeyDown (KeyCode.T)) {
+		if (Input.GetKeyDown(KeyCode.T)) {
 			//ConvertEnergy();
 		}
 
@@ -347,134 +346,134 @@ public class PlayerInput : MonoBehaviour {
 				Cursor.visible = true;
 		}
 		if (collision.gameObject.tag == "ShieldBoost"){
-			Destroy (collision.gameObject);
-			BoostShields (3);
+			Destroy(collision.gameObject);
+			BoostShields(3);
 			AudioSource.PlayClipAtPoint(PickupSound, transform.position);
 			Color start = new Color(0f,0f,80f,0f);
 			Color end = new Color(0f,0f,80f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 		}
 		if (collision.gameObject.tag == "EnergyBoost"){
-			Destroy (collision.gameObject);
-			BoostEnergy (3);
+			Destroy(collision.gameObject);
+			BoostEnergy(3);
 			AudioSource.PlayClipAtPoint(PickupSound, transform.position);
 			Color start = new Color(80f,80f,80f,0f);
 			Color end = new Color(80f,80f,0f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 		}
 		if (collision.gameObject.tag == "key_red"){
-			Destroy (collision.gameObject);
-			HUD.RedKeyOn ();
+			Destroy(collision.gameObject);
+			HUD.RedKeyOn();
 			hasRedKey = true;
 			AudioSource.PlayClipAtPoint(KeySound, transform.position);
 			Color start = new Color(80f,0f,0f,0f);
 			Color end = new Color(80f,0f,0f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 		}
 		if (collision.gameObject.tag == "key_yellow"){
-			Destroy (collision.gameObject);
-			HUD.YellowKeyOn ();
+			Destroy(collision.gameObject);
+			HUD.YellowKeyOn();
 			hasYellowKey = true;
 			AudioSource.PlayClipAtPoint(KeySound, transform.position);
 			Color start = new Color(80f,80f,0f,0f);
 			Color end = new Color(80f,80f,0f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 		}
 		if (collision.gameObject.tag == "key_blue"){
-			Destroy (collision.gameObject);
-			HUD.BlueKeyOn ();
+			Destroy(collision.gameObject);
+			HUD.BlueKeyOn();
 			hasBlueKey = true;
 			AudioSource.PlayClipAtPoint(KeySound, transform.position);
 			Color start = new Color(0f,0f,80f,0f);
 			Color end = new Color(0f,0f,80f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 		}
 		if (collision.gameObject.tag == "hostage"){
 			AudioSource.PlayClipAtPoint(HostageSound, transform.position);
-			Destroy (collision.gameObject);
+			Destroy(collision.gameObject);
 			Color start = new Color(0f,0f,80f,0f);
 			Color end = new Color(0f,0f,80f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 		}
 		if (collision.gameObject.tag == "p_cloak"){
 			//visible = false;
 			AudioSource.PlayClipAtPoint(CloakSound, transform.position);
-			Destroy (collision.gameObject);
+			Destroy(collision.gameObject);
 			Color start = new Color(0f,0f,80f,0f);
 			Color end = new Color(0f,0f,80f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 		}
 		if (collision.gameObject.tag == "p_invuln"){
 			//killable = false;
 			AudioSource.PlayClipAtPoint(InvulnSound, transform.position);
-			Destroy (collision.gameObject);
+			Destroy(collision.gameObject);
 			Color start = new Color(0f,0f,80f,0f);
 			Color end = new Color(0f,0f,80f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 		}
 		if (collision.gameObject.tag == "p_life"){
 			LifeCount += 1;
 			AudioSource.PlayClipAtPoint(LifeSound, transform.position);
-			Destroy (collision.gameObject);
+			Destroy(collision.gameObject);
 			Color start = new Color(0f,0f,80f,0f);
 			Color end = new Color(0f,0f,80f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 			HUD.SetStats(LifeCount, Shields, Energy);
 		}
 		if (collision.gameObject.tag == "p_headlight"){
 			hasHeadlight = true;
 			AudioSource.PlayClipAtPoint(PickupSound, transform.position);
-			Destroy (collision.gameObject);
+			Destroy(collision.gameObject);
 			Color start = new Color(255f,255f,255f,0f);
 			Color end = new Color(255f,255f,255f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 		}
 		if (collision.gameObject.tag == "p_converter"){
 			hasConverter = true;
 			AudioSource.PlayClipAtPoint(PickupSound, transform.position);
-			Destroy (collision.gameObject);
+			Destroy(collision.gameObject);
 			Color start = new Color(255f,255f,255f,0f);
 			Color end = new Color(255f,255f,255f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 		}
 		if (collision.gameObject.tag == "p_ammorack"){
 			hasAmmoRack = true;
 			MaxVulcanAmmo = 25000;
 			AudioSource.PlayClipAtPoint(PickupSound, transform.position);
-			Destroy (collision.gameObject);
+			Destroy(collision.gameObject);
 			Color start = new Color(255f,255f,255f,0f);
 			Color end = new Color(255f,255f,255f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 		}
 		if (collision.gameObject.tag == "p_allmap"){
 			hasAllmap = true;
 			AudioSource.PlayClipAtPoint(PickupSound, transform.position);
-			Destroy (collision.gameObject);
+			Destroy(collision.gameObject);
 			Color start = new Color(255f,255f,255f,0f);
 			Color end = new Color(255f,255f,255f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 		}
 		if (collision.gameObject.tag == "p_afterburner"){
 			hasAfterburner = true;
 			AudioSource.PlayClipAtPoint(PickupSound, transform.position);
-			Destroy (collision.gameObject);
+			Destroy(collision.gameObject);
 			Color start = new Color(255f,255f,255f,0f);
 			Color end = new Color(255f,255f,255f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 		}
 		//SECONDARY PICKUPS
 		if (collision.gameObject.tag == "m_conc1"){
@@ -493,11 +492,11 @@ public class PlayerInput : MonoBehaviour {
 			}
 			hasConc = true;
 			AudioSource.PlayClipAtPoint(PickupSound, transform.position);
-			Destroy (collision.gameObject);
+			Destroy(collision.gameObject);
 			Color start = new Color(255f,255f,255f,0f);
 			Color end = new Color(255f,255f,255f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 			HUD.SetSecondary(10, EquippedSecondary, ConcAmmo);
 		}
 		if (collision.gameObject.tag == "m_conc4"){
@@ -516,11 +515,11 @@ public class PlayerInput : MonoBehaviour {
 			}
 			hasConc = true;
 			AudioSource.PlayClipAtPoint(PickupSound, transform.position);
-			Destroy (collision.gameObject);
+			Destroy(collision.gameObject);
 			Color start = new Color(255f,255f,255f,0f);
 			Color end = new Color(255f,255f,255f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 			HUD.SetSecondary(10, EquippedSecondary, ConcAmmo);
 		}
 		if (collision.gameObject.tag == "m_flash1"){
@@ -539,11 +538,11 @@ public class PlayerInput : MonoBehaviour {
 			}
 			hasFlash = true;
 			AudioSource.PlayClipAtPoint(PickupSound, transform.position);
-			Destroy (collision.gameObject);
+			Destroy(collision.gameObject);
 			Color start = new Color(255f,255f,255f,0f);
 			Color end = new Color(255f,255f,255f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 		}
 		if (collision.gameObject.tag == "m_flash4"){
 			if (hasAmmoRack) {
@@ -561,11 +560,11 @@ public class PlayerInput : MonoBehaviour {
 			}
 			hasFlash = true;
 			AudioSource.PlayClipAtPoint(PickupSound, transform.position);
-			Destroy (collision.gameObject);
+			Destroy(collision.gameObject);
 			Color start = new Color(255f,255f,255f,0f);
 			Color end = new Color(255f,255f,255f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 		}
 		if (collision.gameObject.tag == "m_homing1"){
 			if (hasAmmoRack) {
@@ -583,11 +582,11 @@ public class PlayerInput : MonoBehaviour {
 			}
 			hasHoming = true;
 			AudioSource.PlayClipAtPoint(PickupSound, transform.position);
-			Destroy (collision.gameObject);
+			Destroy(collision.gameObject);
 			Color start = new Color(255f,255f,255f,0f);
 			Color end = new Color(255f,255f,255f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 		}
 		if (collision.gameObject.tag == "m_homing4"){
 			if (hasAmmoRack) {
@@ -605,11 +604,11 @@ public class PlayerInput : MonoBehaviour {
 			}
 			hasHoming = true;
 			AudioSource.PlayClipAtPoint(PickupSound, transform.position);
-			Destroy (collision.gameObject);
+			Destroy(collision.gameObject);
 			Color start = new Color(255f,255f,255f,0f);
 			Color end = new Color(255f,255f,255f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 		}
 		if (collision.gameObject.tag == "m_guide1"){
 			if (hasAmmoRack) {
@@ -627,11 +626,11 @@ public class PlayerInput : MonoBehaviour {
 			}
 			hasGuide = true;
 			AudioSource.PlayClipAtPoint(PickupSound, transform.position);
-			Destroy (collision.gameObject);
+			Destroy(collision.gameObject);
 			Color start = new Color(255f,255f,255f,0f);
 			Color end = new Color(255f,255f,255f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 		}
 		if (collision.gameObject.tag == "m_guide4"){
 			if (hasAmmoRack) {
@@ -649,11 +648,11 @@ public class PlayerInput : MonoBehaviour {
 			}
 			hasGuide = true;
 			AudioSource.PlayClipAtPoint(PickupSound, transform.position);
-			Destroy (collision.gameObject);
+			Destroy(collision.gameObject);
 			Color start = new Color(255f,255f,255f,0f);
 			Color end = new Color(255f,255f,255f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 		}
 		if (collision.gameObject.tag == "m_proxbox"){
 			if (hasAmmoRack) {
@@ -671,11 +670,11 @@ public class PlayerInput : MonoBehaviour {
 			}
 			hasProxbomb = true;
 			AudioSource.PlayClipAtPoint(PickupSound, transform.position);
-			Destroy (collision.gameObject);
+			Destroy(collision.gameObject);
 			Color start = new Color(255f,255f,255f,0f);
 			Color end = new Color(255f,255f,255f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 		}
 		if (collision.gameObject.tag == "m_proxbomb"){
 			collision.gameObject.GetComponent<MineScript>().Detonate();
@@ -701,11 +700,11 @@ public class PlayerInput : MonoBehaviour {
 			}
 			hasSmartbomb = true;
 			AudioSource.PlayClipAtPoint(PickupSound, transform.position);
-			Destroy (collision.gameObject);
+			Destroy(collision.gameObject);
 			Color start = new Color(255f,255f,255f,0f);
 			Color end = new Color(255f,255f,255f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 		}
 		if (collision.gameObject.tag == "m_merc1"){
 			if (hasAmmoRack) {
@@ -723,11 +722,11 @@ public class PlayerInput : MonoBehaviour {
 			}
 			hasMerc = true;
 			AudioSource.PlayClipAtPoint(PickupSound, transform.position);
-			Destroy (collision.gameObject);
+			Destroy(collision.gameObject);
 			Color start = new Color(255f,255f,255f,0f);
 			Color end = new Color(255f,255f,255f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 		}
 		if (collision.gameObject.tag == "m_merc4"){
 			if (hasAmmoRack) {
@@ -745,11 +744,11 @@ public class PlayerInput : MonoBehaviour {
 			}
 			hasMerc = true;
 			AudioSource.PlayClipAtPoint(PickupSound, transform.position);
-			Destroy (collision.gameObject);
+			Destroy(collision.gameObject);
 			Color start = new Color(255f,255f,255f,0f);
 			Color end = new Color(255f,255f,255f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 		}
 		if (collision.gameObject.tag == "m_mega"){
 			if (hasAmmoRack) {
@@ -767,11 +766,11 @@ public class PlayerInput : MonoBehaviour {
 			}
 			hasMega = true;
 			AudioSource.PlayClipAtPoint(PickupSound, transform.position);
-			Destroy (collision.gameObject);
+			Destroy(collision.gameObject);
 			Color start = new Color(255f,255f,255f,0f);
 			Color end = new Color(255f,255f,255f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 		}
 		if (collision.gameObject.tag == "m_smart"){
 			if (hasAmmoRack) {
@@ -789,11 +788,11 @@ public class PlayerInput : MonoBehaviour {
 			}
 			hasSmart = true;
 			AudioSource.PlayClipAtPoint(PickupSound, transform.position);
-			Destroy (collision.gameObject);
+			Destroy(collision.gameObject);
 			Color start = new Color(255f,255f,255f,0f);
 			Color end = new Color(255f,255f,255f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 		}
 		if (collision.gameObject.tag == "m_earthshaker"){
 			if (hasAmmoRack) {
@@ -811,129 +810,129 @@ public class PlayerInput : MonoBehaviour {
 			}
 			hasEarthshaker = true;
 			AudioSource.PlayClipAtPoint(PickupSound, transform.position);
-			Destroy (collision.gameObject);
+			Destroy(collision.gameObject);
 			Color start = new Color(255f,255f,255f,0f);
 			Color end = new Color(255f,255f,255f,.8f);
-			coroutine = FlashColor (start, end, .1f);
-			StartCoroutine (coroutine);
+			coroutine = HUD.FlashColor(start, end, .1f);
+			StartCoroutine(coroutine);
 		}
 
 		//WEAPON PICKUPS
 		if (collision.gameObject.tag == "w_laser") {
 			if (Energy < 200 && LaserLevel < 4) {
-				Destroy (collision.gameObject);
-				ImproveLaser ("laser");
-				BoostEnergy (3);
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
+				Destroy(collision.gameObject);
+				ImproveLaser("laser");
+				BoostEnergy(3);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
 			} else if (Energy >= 200 && LaserLevel < 4) {
-				Destroy (collision.gameObject);
-				ImproveLaser ("laser");
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
+				Destroy(collision.gameObject);
+				ImproveLaser("laser");
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
 			} else if (Energy < 200 && LaserLevel >= 4) {
-				Destroy (collision.gameObject);
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				BoostEnergy (3);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
+				Destroy(collision.gameObject);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				BoostEnergy(3);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
 			} else if (Energy >= 200 && LaserLevel >= 4) {
 				//Do nothing. Display message eventually.
 			} else {
-				Debug.Log ("ERROR: This shouldn't be possible.");
+				Debug.Log("ERROR: This shouldn't be possible.");
 			}
 		}
 		if (collision.gameObject.tag == "w_super"){
 			if (Energy < 200 && LaserLevel < 6) {
-				Destroy (collision.gameObject);
-				ImproveLaser ("super");
-				BoostEnergy (3);
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
+				Destroy(collision.gameObject);
+				ImproveLaser("super");
+				BoostEnergy(3);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
 			} else if (Energy >= 200 && LaserLevel < 6) {
-				Destroy (collision.gameObject);
-				ImproveLaser ("super");
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
+				Destroy(collision.gameObject);
+				ImproveLaser("super");
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
 			} else if (Energy < 200 && LaserLevel >= 6) {
-				Destroy (collision.gameObject);
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				BoostEnergy (3);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
+				Destroy(collision.gameObject);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				BoostEnergy(3);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
 			} else if (Energy >= 200 && LaserLevel >= 6) {
 				//Do nothing. Display message eventually.
 			} else {
-				Debug.Log ("ERROR: This shouldn't be possible.");
+				Debug.Log("ERROR: This shouldn't be possible.");
 			}
 		}
 		if (collision.gameObject.tag == "w_quad"){
 			if (Energy < 200 && !hasQuad) {
 				hasQuad = true;
-				laserSpawn3.GetComponent<Renderer> ().enabled = true;
-				laserSpawn4.GetComponent<Renderer> ().enabled = true;
-				BoostEnergy (3);
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
+				laserSpawn3.GetComponent<Renderer>().enabled = true;
+				laserSpawn4.GetComponent<Renderer>().enabled = true;
+				BoostEnergy(3);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
 			} else if (Energy >= 200 && !hasQuad) {
 				hasQuad = true;
-				laserSpawn3.GetComponent<Renderer> ().enabled = true;
-				laserSpawn4.GetComponent<Renderer> ().enabled = true;
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
+				laserSpawn3.GetComponent<Renderer>().enabled = true;
+				laserSpawn4.GetComponent<Renderer>().enabled = true;
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
 			} else if (Energy < 200 && hasQuad) {
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				BoostEnergy (3);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				BoostEnergy(3);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
 			} else if (Energy >= 200 && hasQuad) {
 				//Do nothing. Display message eventually.
 			} else {
-				Debug.Log ("ERROR: This shouldn't be possible.");
+				Debug.Log("ERROR: This shouldn't be possible.");
 			}
 		}
 		if (collision.gameObject.tag == "w_vulcan"){
 			if (VulcanAmmo < MaxVulcanAmmo && !hasVulcan) {
 				hasVulcan = true;
-				BoostAmmo (500);
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
+				BoostAmmo(500);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
 			} else if (VulcanAmmo >= MaxVulcanAmmo && !hasVulcan) {
 				hasVulcan = true;
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
 			} else if (VulcanAmmo < MaxVulcanAmmo && hasVulcan) {
-				BoostAmmo (500);
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
+				BoostAmmo(500);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
 			} else if (VulcanAmmo >= MaxVulcanAmmo && hasVulcan) {
 				//Do nothing. Display message eventually.
 			} else {
-				Debug.Log ("ERROR: This shouldn't be possible.");
+				Debug.Log("ERROR: This shouldn't be possible.");
 			}
 		}
 		if (collision.gameObject.tag == "w_vulcanammo"){
 			if (VulcanAmmo < MaxVulcanAmmo) {
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
-				BoostAmmo (1000);
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
+				BoostAmmo(1000);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
 			} else {
 				//Reject
 			}
@@ -941,183 +940,183 @@ public class PlayerInput : MonoBehaviour {
 		if (collision.gameObject.tag == "w_gauss"){
 			if (VulcanAmmo < MaxVulcanAmmo && !hasGauss) {
 				hasGauss = true;
-				BoostAmmo (500);
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
+				BoostAmmo(500);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
 			} else if (VulcanAmmo >= MaxVulcanAmmo && !hasGauss) {
 				hasGauss = true;
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
 			} else if (VulcanAmmo < MaxVulcanAmmo && hasGauss) {
-				BoostAmmo (500);
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
+				BoostAmmo(500);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
 			} else if (VulcanAmmo >= MaxVulcanAmmo && hasGauss) {
 				//Do nothing. Display message eventually.
 			} else {
-				Debug.Log ("ERROR: This shouldn't be possible.");
+				Debug.Log("ERROR: This shouldn't be possible.");
 			}
 		}
 		if (collision.gameObject.tag == "w_spreadfire"){
 			if (Energy < 200 && !hasSpreadfire) {
 				hasSpreadfire = true;
-				BoostEnergy (3);
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
+				BoostEnergy(3);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
 			} else if (Energy >= 200 && !hasSpreadfire) {
 				hasSpreadfire = true;
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
 			} else if (Energy < 200 && hasSpreadfire) {
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				BoostEnergy (3);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				BoostEnergy(3);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
 			} else if (Energy >= 200 && hasSpreadfire) {
 				//Do nothing. Display message eventually.
 			} else {
-				Debug.Log ("ERROR: This shouldn't be possible.");
+				Debug.Log("ERROR: This shouldn't be possible.");
 			}
 		}
 		if (collision.gameObject.tag == "w_helix"){
 			if (Energy < 200 && !hasHelix) {
 				hasHelix = true;
-				BoostEnergy (3);
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
+				BoostEnergy(3);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
 			} else if (Energy >= 200 && !hasHelix) {
 				hasHelix = true;
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
 			} else if (Energy < 200 && hasHelix) {
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				BoostEnergy (3);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				BoostEnergy(3);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
 			} else if (Energy >= 200 && hasHelix) {
 				//Do nothing. Display message eventually.
 			} else {
-				Debug.Log ("ERROR: This shouldn't be possible.");
+				Debug.Log("ERROR: This shouldn't be possible.");
 			}
 		}
 		if (collision.gameObject.tag == "w_plasma"){
 			if (Energy < 200 && !hasPlasma) {
 				hasPlasma = true;
-				BoostEnergy (3);
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
+				BoostEnergy(3);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
 			} else if (Energy >= 200 && !hasPlasma) {
 				hasPlasma = true;
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
 			} else if (Energy < 200 && hasPlasma) {
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				BoostEnergy (3);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				BoostEnergy(3);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
 			} else if (Energy >= 200 && hasPlasma) {
 				//Do nothing. Display message eventually.
 			} else {
-				Debug.Log ("ERROR: This shouldn't be possible.");
+				Debug.Log("ERROR: This shouldn't be possible.");
 			}
 		}
 		if (collision.gameObject.tag == "w_phoenix"){
 			if (Energy < 200 && !hasPhoenix) {
 				hasPhoenix = true;
-				BoostEnergy (3);
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
+				BoostEnergy(3);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
 			} else if (Energy >= 200 && !hasPhoenix) {
 				hasPhoenix = true;
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
 			} else if (Energy < 200 && hasPhoenix) {
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				BoostEnergy (3);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				BoostEnergy(3);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
 			} else if (Energy >= 200 && hasPhoenix) {
 				//Do nothing. Display message eventually.
 			} else {
-				Debug.Log ("ERROR: This shouldn't be possible.");
+				Debug.Log("ERROR: This shouldn't be possible.");
 			}
 		}
 		if (collision.gameObject.tag == "w_fusion"){
 			if (Energy < 200 && !hasFusion) {
 				hasFusion = true;
-				BoostEnergy (3);
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
+				BoostEnergy(3);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
 			} else if (Energy >= 200 && !hasFusion) {
 				hasFusion = true;
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
 			} else if (Energy < 200 && hasFusion) {
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				BoostEnergy (3);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				BoostEnergy(3);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
 			} else if (Energy >= 200 && hasFusion) {
 				//Do nothing. Display message eventually.
 			} else {
-				Debug.Log ("ERROR: This shouldn't be possible.");
+				Debug.Log("ERROR: This shouldn't be possible.");
 			}
 		}
 		if (collision.gameObject.tag == "w_omega"){
 			if (Energy < 200 && !hasOmega) {
 				hasOmega = true;
-				BoostEnergy (3);
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
+				BoostEnergy(3);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
 			} else if (Energy >= 200 && !hasOmega) {
 				hasOmega = true;
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
 			} else if (Energy < 200 && hasOmega) {
-				coroutine = FlashColor (new Color (255f, 255f, 255f, 0f), new Color (255f, 255f, 255f, .8f), .1f);
-				StartCoroutine (coroutine);
-				BoostEnergy (3);
-				AudioSource.PlayClipAtPoint (PickupSound, transform.position);
-				Destroy (collision.gameObject);
+				coroutine = HUD.FlashColor(new Color(255f, 255f, 255f, 0f), new Color(255f, 255f, 255f, .8f), .1f);
+				StartCoroutine(coroutine);
+				BoostEnergy(3);
+				AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+				Destroy(collision.gameObject);
 			} else if (Energy >= 200 && hasOmega) {
 				//Do nothing. Display message eventually.
 			} else {
-				Debug.Log ("ERROR: This shouldn't be possible.");
+				Debug.Log("ERROR: This shouldn't be possible.");
 			}
 		}
 	}
@@ -1138,27 +1137,10 @@ public class PlayerInput : MonoBehaviour {
 		SceneManager.LoadScene("MainMenu");
 	}
 
-	IEnumerator FlashColor(Color start, Color end, float overTime)
-	{
-		float startTime = Time.time;
-		while(Time.time < startTime + overTime)
-		{
-			UICanvas.GetComponent<Image>().color = Color.Lerp(start, end, (Time.time - startTime)/overTime);
-			yield return null;
-		}
-		startTime = Time.time;
-		while(Time.time < startTime + overTime)
-		{
-			UICanvas.GetComponent<Image>().color = Color.Lerp(end, start, (Time.time - startTime)/overTime);
-			yield return null;
-		}
-		UICanvas.GetComponent<Image>().color = start;
-	}
-
 	public void PrimaryFire(string Weapon, int LaserLevel)
 	{
 		if (Weapon == "Laser") {
-			if (!DrainEnergy (2)) {
+			if (!DrainEnergy(2)) {
 				return;
 			}
 			HUD.SetPrimary(0, EquippedPrimary, Energy/2);
@@ -1167,120 +1149,120 @@ public class PlayerInput : MonoBehaviour {
 			var laser3 = new GameObject();
 			var laser4 = new GameObject();
 			if (LaserLevel == 1) {
-				laser1 = (GameObject)Instantiate (
+				laser1 = (GameObject)Instantiate(
 					Laser1,
 					laserSpawn1.position,
 					laserSpawn1.rotation);
-				laser2 = (GameObject)Instantiate (
+				laser2 = (GameObject)Instantiate(
 					Laser1,
 					laserSpawn2.position,
 					laserSpawn2.rotation);
 				if (hasQuad) {
-					laser3 = (GameObject)Instantiate (
+					laser3 = (GameObject)Instantiate(
 						Laser1,
 						laserSpawn3.position,
 						laserSpawn3.rotation);
-					laser4 = (GameObject)Instantiate (
+					laser4 = (GameObject)Instantiate(
 						Laser1,
 						laserSpawn4.position,
 						laserSpawn4.rotation);
 				}
 			}
 			if (LaserLevel == 2) {
-				laser1 = (GameObject)Instantiate (
+				laser1 = (GameObject)Instantiate(
 					Laser2,
 					laserSpawn1.position,
 					laserSpawn1.rotation);
-				laser2 = (GameObject)Instantiate (
+				laser2 = (GameObject)Instantiate(
 					Laser2,
 					laserSpawn2.position,
 					laserSpawn2.rotation);
 				if (hasQuad) {
-					laser3 = (GameObject)Instantiate (
+					laser3 = (GameObject)Instantiate(
 						Laser2,
 						laserSpawn3.position,
 						laserSpawn3.rotation);
-					laser4 = (GameObject)Instantiate (
+					laser4 = (GameObject)Instantiate(
 						Laser2,
 						laserSpawn4.position,
 						laserSpawn4.rotation);
 				}
 			}
 			if (LaserLevel == 3) {
-				laser1 = (GameObject)Instantiate (
+				laser1 = (GameObject)Instantiate(
 					Laser3,
 					laserSpawn1.position,
 					laserSpawn1.rotation);
-				laser2 = (GameObject)Instantiate (
+				laser2 = (GameObject)Instantiate(
 					Laser3,
 					laserSpawn2.position,
 					laserSpawn2.rotation);
 				if (hasQuad) {
-					laser3 = (GameObject)Instantiate (
+					laser3 = (GameObject)Instantiate(
 						Laser3,
 						laserSpawn3.position,
 						laserSpawn3.rotation);
-					laser4 = (GameObject)Instantiate (
+					laser4 = (GameObject)Instantiate(
 						Laser3,
 						laserSpawn4.position,
 						laserSpawn4.rotation);
 				}
 			}
 			if (LaserLevel == 4) {
-				laser1 = (GameObject)Instantiate (
+				laser1 = (GameObject)Instantiate(
 					Laser4,
 					laserSpawn1.position,
 					laserSpawn1.rotation);
-				laser2 = (GameObject)Instantiate (
+				laser2 = (GameObject)Instantiate(
 					Laser4,
 					laserSpawn2.position,
 					laserSpawn2.rotation);
 				if (hasQuad) {
-					laser3 = (GameObject)Instantiate (
+					laser3 = (GameObject)Instantiate(
 						Laser4,
 						laserSpawn3.position,
 						laserSpawn3.rotation);
-					laser4 = (GameObject)Instantiate (
+					laser4 = (GameObject)Instantiate(
 						Laser4,
 						laserSpawn4.position,
 						laserSpawn4.rotation);
 				}
 			}
 			if (LaserLevel == 5) {
-				laser1 = (GameObject)Instantiate (
+				laser1 = (GameObject)Instantiate(
 					Laser5,
 					laserSpawn1.position,
 					laserSpawn1.rotation);
-				laser2 = (GameObject)Instantiate (
+				laser2 = (GameObject)Instantiate(
 					Laser5,
 					laserSpawn2.position,
 					laserSpawn2.rotation);
 				if (hasQuad) {
-					laser3 = (GameObject)Instantiate (
+					laser3 = (GameObject)Instantiate(
 						Laser5,
 						laserSpawn3.position,
 						laserSpawn3.rotation);
-					laser4 = (GameObject)Instantiate (
+					laser4 = (GameObject)Instantiate(
 						Laser5,
 						laserSpawn4.position,
 						laserSpawn4.rotation);
 				}
 			}
 			if (LaserLevel == 6) {
-				laser1 = (GameObject)Instantiate (
+				laser1 = (GameObject)Instantiate(
 					Laser6,
 					laserSpawn1.position,
 					laserSpawn1.rotation);
-				laser2 = (GameObject)Instantiate (
+				laser2 = (GameObject)Instantiate(
 					Laser6,
 					laserSpawn2.position,
 					laserSpawn2.rotation);
 				if (hasQuad) {
-					laser3 = (GameObject)Instantiate (
+					laser3 = (GameObject)Instantiate(
 						Laser6,
 						laserSpawn3.position,
 						laserSpawn3.rotation);
-					laser4 = (GameObject)Instantiate (
+					laser4 = (GameObject)Instantiate(
 						Laser6,
 						laserSpawn4.position,
 						laserSpawn4.rotation);
@@ -1288,18 +1270,18 @@ public class PlayerInput : MonoBehaviour {
 			}
 
 			//Add velocity to the projectile
-			laser1.GetComponent<Rigidbody> ().velocity = laser1.transform.up * 30;
-			laser2.GetComponent<Rigidbody> ().velocity = laser2.transform.up * 30;
+			laser1.GetComponent<Rigidbody>().velocity = laser1.transform.up * 30;
+			laser2.GetComponent<Rigidbody>().velocity = laser2.transform.up * 30;
 
 			//Destroy projectile after 2 seconds
-			Destroy (laser1, 2.0f);
-			Destroy (laser2, 2.0f);
+			Destroy(laser1, 2.0f);
+			Destroy(laser2, 2.0f);
 
 			if (hasQuad) {
-				laser3.GetComponent<Rigidbody> ().velocity = laser3.transform.up * 30;
-				laser4.GetComponent<Rigidbody> ().velocity = laser4.transform.up * 30;
-				Destroy (laser3, 2.0f);
-				Destroy (laser4, 2.0f);
+				laser3.GetComponent<Rigidbody>().velocity = laser3.transform.up * 30;
+				laser4.GetComponent<Rigidbody>().velocity = laser4.transform.up * 30;
+				Destroy(laser3, 2.0f);
+				Destroy(laser4, 2.0f);
 			}
 		}
 	}
@@ -1310,7 +1292,7 @@ public class PlayerInput : MonoBehaviour {
 			ConcAmmo = 0;
 			return;
 		}
-		var missile = (GameObject)Instantiate (
+		var missile = (GameObject)Instantiate(
 				Missile,
 				flareSpawn.position,
 				flareSpawn.rotation
@@ -1318,7 +1300,7 @@ public class PlayerInput : MonoBehaviour {
 		missile.GetComponent<Rigidbody>().velocity = missile.transform.up * 60;
 		ConcAmmo -= 1;
 		HUD.SetSecondary(10, EquippedSecondary, ConcAmmo);
-		// Debug.Log ("Missile Away!");
+		// Debug.Log("Missile Away!");
 	}
 
 	public bool hasBlue(){
@@ -1335,13 +1317,16 @@ public class PlayerInput : MonoBehaviour {
 
 	public void FireFlare(){
 		//Fire a flare.
-		if (DrainEnergy (1)) {
-			var flare = new GameObject ();
-			flare = (GameObject)Instantiate (
+		if (DrainEnergy(1)) {
+			if (EquippedPrimary == "Laser" || EquippedPrimary == "Super Laser"){
+				HUD.SetPrimary(0, EquippedPrimary, Energy/2);
+			}
+			var flare = new GameObject();
+			flare = (GameObject)Instantiate(
 				Flare,
 				flareSpawn.position,
 				flareSpawn.rotation);
-			flare.GetComponent<Rigidbody> ().velocity = flare.transform.up * 30;
+			flare.GetComponent<Rigidbody>().velocity = flare.transform.up * 30;
 		} else {
 			//Not enough energy for a flare.
 		}
@@ -1358,7 +1343,7 @@ public class PlayerInput : MonoBehaviour {
 				LaserLevel += 1;
 			}
 		} else {
-			Debug.Log ("That's not supposed to happen....");
+			Debug.Log("That's not supposed to happen....");
 		}
 		canUpgrade = false;
 		StartCoroutine(WaitForUpgrade());
@@ -1421,7 +1406,7 @@ public class PlayerInput : MonoBehaviour {
 			HUD.SetStats(LifeCount, Shields, Energy);
 			HUD.SetPanels(Energy);
 			return false;
-		} else if (Energy - (amount) < 0) {
+		} else if (Energy -(amount) < 0) {
 			Energy = 0;
 			HUD.SetStats(LifeCount, Shields, Energy);
 			HUD.SetPanels(Energy);
