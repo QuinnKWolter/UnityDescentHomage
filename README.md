@@ -1,7 +1,7 @@
 # Unity_Project03 - "Descent Homage"
-Final project for Game Implementation w/ Unity.
-Email: QuinnKWolter(at)gmail(dot)com
-Itch.io: https://cyborgballoon.itch.io/descent-homage-unity
+Final project for Game Implementation w/ Unity.  
+Email: QuinnKWolter(at)gmail(dot)com  
+Itch.io: https://cyborgballoon.itch.io/descent-homage-unity  
 
 ## Story
 A hostile artificial intelligence has possessed the automated security drones and robotic workers of a planetary mining operation. You play a hired mercenary sent to infiltrate these labyrinthine mines with the intent of destroying a central reactor and blowing up the facility. You must manage your energy, shields, and ammo while exploring for keys and secrets in a sprawling, non-linear level.
